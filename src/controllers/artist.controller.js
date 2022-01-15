@@ -42,9 +42,13 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.patch("/:id", async (req, res) => {
   try {
-    const album = await Artists.findById(req.params.id)
+    await Artists.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+
+    const findArtist = await Artists.findById(req.params.id)
       .populate({
         path: "albums",
         populate: {
@@ -53,7 +57,8 @@ router.get("/:id", async (req, res) => {
       })
       .lean()
       .exec();
-    return res.status(200).send(album);
+
+    res.status(200).send({ ...findArtist, error: false });
   } catch (err) {
     return res.status(404).send({ err });
   }
