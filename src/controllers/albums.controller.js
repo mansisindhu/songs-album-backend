@@ -6,7 +6,7 @@ const Albums = require("../models/album.model");
 router.get("/", async (req, res) => {
   try {
     const albums = await Albums.find({}).lean().exec();
-    return res.status(200).send({ albums, len: albums.length });
+    return res.status(200).send(albums);
   } catch (err) {
     return res.status(404).send({ err });
   }
