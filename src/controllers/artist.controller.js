@@ -12,6 +12,36 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.post("/login", async (req, res) => {
+  try {
+    const findArtist = await Artists.findOne({ email: req.body.email })
+      .populate({
+        path: "albums",
+        populate: {
+          path: "songs",
+        },
+      })
+      .lean()
+      .exec();
+
+    if (!findArtist) {
+      return res
+        .status(200)
+        .send({ message: "Not a valid artist", error: true });
+    }
+
+    if (req.body.password !== findArtist.password) {
+      return res
+        .status(200)
+        .send({ message: "Not a valid artist", error: true });
+    }
+
+    return res.status(200).send({ ...findArtist, error: false });
+  } catch (err) {
+    return res.status(401).send({});
+  }
+});
+
 router.get("/:id", async (req, res) => {
   try {
     const album = await Artists.findById(req.params.id)

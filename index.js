@@ -13,6 +13,6 @@ const artistsController = require("./src/controllers/artist.controller");
 
 app.use("/songs", songsController);
 app.use("/albums", albumsController);
-app.use("/artists", artistsController);
+app.use("/artist", artistsController);
 
 module.exports = app;
