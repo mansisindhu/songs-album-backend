@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Chetavni",
+    "genre": "Hip-Hop/rap",
+    "year": 2020,
+    "songs": []
+  },
+  {
+    "name": "Made in India",
+    "genre": "Indian pop",
+    "year": 1995,
+    "songs": []
+  },
+  {
+    "name": "Barfi!",
+    "genre": "Soundtrack",
+    "year": 2012,
+    "songs": []
+  },
+  {
+    "name": "Lagaan",
+    "genre": "Classical music",
+    "year": 2012,
+    "songs": []
+  },
+  {
+    "name": "Bajirao Mastani",
+    "genre": "Filmi",
+    "year": 2015,
+    "songs": []
+  }
+]
