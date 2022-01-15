@@ -5,6 +5,7 @@ const albumSchema = new mongoose.Schema({
   genre: { type: String },
   songs: [{ type: mongoose.Schema.Types.ObjectId, ref: "song" }],
   year: { type: Number },
+  url: { type: String },
 });
 
 module.exports = mongoose.model("songAlbum", albumSchema);

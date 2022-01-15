@@ -12,4 +12,13 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.post("/", async (req, res) => {
+  try {
+    const song = await Songs.create(req.body);
+    return res.status(201).send({ song });
+  } catch (err) {
+    return res.send(404).send({ err });
+  }
+});
+
 module.exports = router;
