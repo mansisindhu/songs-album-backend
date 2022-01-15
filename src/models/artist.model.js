@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const artistSchema = new mongoose.Schema({
   name: { type: String },
   email: { type: String },
-  albums: [{ type: mongoose.Schema.Types.ObjectId, ref: "albums" }],
+  albums: [{ type: mongoose.Schema.Types.ObjectId, ref: "album" }],
   password: { type: String },
   url: { type: String },
 });

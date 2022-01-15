@@ -6,4 +6,4 @@ const songSchema = new mongoose.Schema({
   url: { type: String },
 });
 
-module.exports = mongoose.model("artist", songSchema);
+module.exports = mongoose.model("song", songSchema);
