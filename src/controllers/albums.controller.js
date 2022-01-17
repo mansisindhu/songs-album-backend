@@ -1,6 +1,6 @@
 const express = require("express");
-
 const router = express.Router();
+
 const Albums = require("../models/album.model");
 
 router.get("/", async (req, res) => {
@@ -9,8 +9,7 @@ router.get("/", async (req, res) => {
     const size = Number(req.query.size) || 3;
     const offset = (page - 1) * size;
 
-    const albums = await Albums.find().skip(offset).limit(size).lean().exec();
-
+    const albums = await Albums.find({}).skip(offset).limit(size).lean().exec();
     const totalCount = await Albums.find().countDocuments();
     const totalPages = Math.ceil(totalCount / size);
 
