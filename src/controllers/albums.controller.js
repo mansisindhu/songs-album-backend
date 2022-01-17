@@ -9,11 +9,30 @@ router.get("/", async (req, res) => {
     const size = Number(req.query.size) || 3;
     const offset = (page - 1) * size;
 
-    const albums = await Albums.find({}).skip(offset).limit(size).lean().exec();
-    const totalCount = await Albums.find().countDocuments();
-    const totalPages = Math.ceil(totalCount / size);
+    const sortBy = req.query.sortBy;
+    const genre = req.query.genre;
 
-    return res.status(200).send({ albums, totalPages });
+    if (!genre) {
+      const albums = await Albums.find({})
+        .skip(offset)
+        .limit(size)
+        .sort({ year: sortBy === "old-to-new" ? 1 : -1 })
+        .lean()
+        .exec();
+      const totalCount = await Albums.find().countDocuments();
+      const totalPages = Math.ceil(totalCount / size);
+      return res.status(200).send({ albums, totalPages });
+    } else {
+      const albums = await Albums.find({ genre })
+        .skip(offset)
+        .limit(size)
+        .sort({ year: sortBy === "old-to-new" ? 1 : -1 })
+        .lean()
+        .exec();
+      const totalCount = await Albums.find({ genre }).countDocuments();
+      const totalPages = Math.ceil(totalCount / size);
+      return res.status(200).send({ albums, totalPages });
+    }
   } catch (err) {
     return res.status(404).send({ err });
   }
