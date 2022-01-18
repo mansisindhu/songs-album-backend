@@ -10,29 +10,31 @@ router.get("/", async (req, res) => {
     const offset = (page - 1) * size;
 
     const sortBy = req.query.sortBy;
-    const genre = req.query.genre;
+    const genre = req.query.genre || "";
+    const searchBy = req.query.searchBy || "";
 
-    if (!genre) {
-      const albums = await Albums.find({})
-        .skip(offset)
-        .limit(size)
-        .sort({ year: sortBy === "old-to-new" ? 1 : -1 })
-        .lean()
-        .exec();
-      const totalCount = await Albums.find().countDocuments();
-      const totalPages = Math.ceil(totalCount / size);
-      return res.status(200).send({ albums, totalPages });
-    } else {
-      const albums = await Albums.find({ genre })
-        .skip(offset)
-        .limit(size)
-        .sort({ year: sortBy === "old-to-new" ? 1 : -1 })
-        .lean()
-        .exec();
-      const totalCount = await Albums.find({ genre }).countDocuments();
-      const totalPages = Math.ceil(totalCount / size);
-      return res.status(200).send({ albums, totalPages });
-    }
+    const albums = await Albums.find({
+      $and: [
+        { name: new RegExp(searchBy, "i") },
+        { genre: new RegExp(genre, "i") },
+      ],
+    })
+      .skip(offset)
+      .limit(size)
+      .sort({ year: sortBy === "old-to-new" ? 1 : -1 })
+      .lean()
+      .exec();
+
+    const totalCount = await Albums.find({
+      $and: [
+        { name: new RegExp(searchBy, "i") },
+        { genre: new RegExp(genre, "i") },
+      ],
+    }).countDocuments();
+
+    const totalPages = Math.ceil(totalCount / size);
+
+    return res.status(200).send({ albums, totalPages });
   } catch (err) {
     return res.status(404).send({ err });
   }
