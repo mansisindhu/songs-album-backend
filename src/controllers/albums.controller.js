@@ -19,6 +19,7 @@ router.get("/", async (req, res) => {
         { genre: new RegExp(genre, "i") },
       ],
     })
+      .populate("artist")
       .skip(offset)
       .limit(size)
       .sort({ year: sortBy === "old-to-new" ? 1 : -1 })
@@ -44,6 +45,7 @@ router.get("/:id", async (req, res) => {
   try {
     const album = await Albums.findById(req.params.id)
       .populate("songs")
+      .populate("artist")
       .lean()
       .exec();
     return res.status(200).send(album);
